@@ -1,4 +1,4 @@
-package jdbc
+package jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ public class JDBCExample {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 
-		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "vic1", "vic1")) {
+		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "vic1", "vic1")) {
 			if (conn != null) {
 				System.out.println("Connection successful");
 			}
