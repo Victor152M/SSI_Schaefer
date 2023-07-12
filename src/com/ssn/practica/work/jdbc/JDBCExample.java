@@ -1,4 +1,5 @@
-package jdbc;
+package com.ssn.practica.work.jdbc;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
