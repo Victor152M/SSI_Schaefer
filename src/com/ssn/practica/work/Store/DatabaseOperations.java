@@ -29,16 +29,8 @@ public class DatabaseOperations {
 		}
 	}
 
-	Integer[] getArticleIds(Session session) {
-		Query<ArticleStore> query = session.createQuery("SELECT price FROM ArticleStore", ArticleStore.class);
-		List<ArticleStore> results = query.getResultList();
-		int i = 0;
-		Integer[] ids = new Integer[100];
-		for (ArticleStore article : results) {
-			ids[i] = article.getId();
-			i++;
-		}
-		return ids;
+	void getArticleIds(Session session) {
+		Query query = session.createQuery("SELECT MIN(Price) FROM Price " + "WHERE ArticleStore.id = :id ");
 	}
 
 	/*
