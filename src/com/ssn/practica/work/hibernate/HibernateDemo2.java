@@ -3,8 +3,10 @@ package com.ssn.practica.work.hibernate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,20 +17,70 @@ public class HibernateDemo2 {
 		demo.run();
 	}
 
-	private EntityManagerFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	private void run() throws Exception {
 		setUp();
 		saveEntities();
-//		queryEntities();
+		updateEntity();
+		deleteEntity();
+		queryEntities();
+		queryOneEntity();
+	}
+
+	private void deleteEntity() {
+		Session session = sessionFactory.openSession();
+
+		session.getTransaction().begin();
+
+		TypedQuery<Course> query = session.createQuery("from Course where name = :nameParameter", Course.class);
+		query.setParameter("nameParameter", "Dummy");
+
+		Course course = query.getSingleResult();
+		session.delete(course);
+
+		session.getTransaction().commit();
+		session.close();
+	}
+
+	private void updateEntity() {
+		EntityManager entityManager = sessionFactory.createEntityManager();
+
+		entityManager.getTransaction().begin();
+
+		TypedQuery<Course> query = entityManager.createQuery("from Course where name = :nameParameter", Course.class);
+		query.setParameter("nameParameter", "Romana");
+
+		Course course = query.getSingleResult();
+		course.setName("Limba romana");
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
+	}
+
+	private void queryOneEntity() {
+		EntityManager entityManager = sessionFactory.createEntityManager();
+
+		TypedQuery<Course> query = entityManager.createQuery("from Course where name = :nameParameter", Course.class);
+		query.setParameter("nameParameter", "Matematica");
+
+		Course result = query.getSingleResult();
+		result.getTrainees().toString();
+		entityManager.close();
+
+		System.out.println(result.getName());
+		System.out.println(result.getTrainees());
+
 	}
 
 	private void queryEntities() {
 		EntityManager entityManager = sessionFactory.createEntityManager();
-		List<Event> result = entityManager.createQuery("from Event", Event.class).getResultList();
-		for (Event event : result) {
-			System.out.println("Event (" + event.getDate() + ") : " + event.getTitle());
+		List<Course> result = entityManager.createQuery("from Course", Course.class).getResultList();
+
+		for (Course c : result) {
+			System.out.println(c);
 		}
+
 		entityManager.close();
 	}
 
@@ -46,9 +98,17 @@ public class HibernateDemo2 {
 		entityManager.persist(course1);
 		Course course2 = new Course("Matematica");
 		entityManager.persist(course2);
+		Course course3 = new Course("Dummy");
+		entityManager.persist(course3);
 
 		trainee1.getCourses().add(course2);
 		trainee2.getCourses().add(course1);
+
+		Evaluation ev1 = new Evaluation(10, course1, trainee1);
+		Evaluation ev2 = new Evaluation(9, course2, trainee2);
+
+		entityManager.persist(ev1);
+		entityManager.persist(ev2);
 
 		entityManager.getTransaction().commit();
 		entityManager.close();

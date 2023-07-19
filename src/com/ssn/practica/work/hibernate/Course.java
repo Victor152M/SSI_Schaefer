@@ -3,14 +3,13 @@ package com.ssn.practica.work.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
 public class Course {
 	@Id
 	@GeneratedValue(generator = "increment")
@@ -20,6 +19,9 @@ public class Course {
 
 	@ManyToMany(mappedBy = "courses")
 	private List<Trainee> trainees = new ArrayList<>();
+
+	@OneToMany(mappedBy = "course")
+	private List<Evaluation> evaluations = new ArrayList<>();
 
 	public Course() {
 
@@ -52,6 +54,19 @@ public class Course {
 
 	public void setTrainees(List<Trainee> trainees) {
 		this.trainees = trainees;
+	}
+
+	@Override
+	public String toString() {
+		return "Course [id=" + id + ", name=" + name + ", trainees=" + trainees + "]";
+	}
+
+	public List<Evaluation> getEvaluations() {
+		return evaluations;
+	}
+
+	public void setEvaluations(List<Evaluation> evaluations) {
+		this.evaluations = evaluations;
 	}
 
 }

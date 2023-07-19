@@ -1,0 +1,13 @@
+sa se realizeze o aplicatie in consola cu urmatorul meniu:
+1. Adaugare articol
+2. Adaugare magazin
+3. Adaugare pret
+4. Afisare statistici
+0. Iesire
+
+1. Trebuie mapate clasele Article, Store, Price in hibernate
+2. Trebuie implementata o aplicatie care le foloseste
+	- adaugare articol: se introduce un nume de articol si respectivul articol se va insera in DB
+	- adaugare magazin: se introduce un nume de magazin si acesta se va insera in DB
+	- adaugare pret: se introduce un nume de magazin si un nume de articol si un pret. In caz ca nu exista magazinul sau articolul respectiv se afiseaza un mesaj de eroare
+	- afisare statistici: afiseaza o lista cu toate articolele iar pentru fiecare articol se afiseaza pretul minim si magazinul la care se gaseste pretul minim
